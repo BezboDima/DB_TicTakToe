@@ -2,39 +2,50 @@
 
 using namespace std;
 
-const int SIZ_c = 3;
-const int SIZ_r = 3;
-void makee(char m[][SIZ_r], int nMov);
-void displayBoard(char m[][SIZ_r]);
-bool winControl(char m[][SIZ_r]);
+//create constants for array size
+const int SIZ_C = 3;
+const int SIZ_R = 3;
+
+void makee(char m[][SIZ_R], int nMov);
+void displayBoard(char m[][SIZ_R]);
+bool winControl(char m[][SIZ_R]);
 
 //does not prevent player from mistakes
 int main(){
-	char matrix[SIZ_c][SIZ_r];
 
-	for (int row = 0; row < SIZ_r; row++) {
-		for (int col = 0; col < SIZ_c; col++) {
+	//create and intitialize array with whitespace char
+	char matrix[SIZ_C][SIZ_R];
+
+	for (int row = 0; row < SIZ_R; row++) {
+		for (int col = 0; col < SIZ_C; col++) {
 			matrix[row][col] = ' ';
 		}
 	}
+
+	//while number of moves is less than 10, continue asking for a move 
 	int moveN = 1;
-	while (moveN < 10 &&!winControl(matrix)) {
+	while (moveN < 10 && !winControl(matrix)) {
 		displayBoard(matrix);
 		makee(matrix, moveN);
 		moveN++;
 	}
 
+	//if winControl is still not true, it is draw
 	displayBoard(matrix);
-	if (moveN == 9) {
+	if (!winControl(matrix)) {
 		cout << "it's a draw " << endl;
 	}
 
 	return 0;
 }
 
-void makee(char m[][SIZ_r], int nMov){
+//lets player make a move. If N move is odd, player X gets to move and the oppisite
+void makee(char m[][SIZ_R], int nMov){
+	
 	int row;
 	int col;
+
+	//stores players move to a corresponding position
 	if (nMov % 2 == 1) {
 		cout << "Player X please make a move choosing row: ";
 		cin >> row;
@@ -58,7 +69,8 @@ void makee(char m[][SIZ_r], int nMov){
 
 }
 
-void displayBoard(char m[][SIZ_r]){
+//displays current state ofthe board
+void displayBoard(char m[][SIZ_R]){
 	cout << "----------" << endl;
 	cout << "| " << m[0][0] << "| " << m[0][1] << "| " << m[0][2] << "|" << endl;
 	cout << "----------" << endl;
@@ -68,8 +80,11 @@ void displayBoard(char m[][SIZ_r]){
 	cout << "----------" << endl;
 }
 
-bool winControl(char m[][SIZ_r]) {
+//returns true if found a winning line
+bool winControl(char m[][SIZ_R]) {
 	bool control = false;
+
+	//goes thru rows
 	for (int i = 0; i < 3; i++) {
 		int sum = 0;
 		for (int j = 0; j < 3; j++) {
@@ -86,7 +101,8 @@ bool winControl(char m[][SIZ_r]) {
 			break;
 		}
 	}
-		
+	
+	//goes thru colums
 	for (int i = 0; i < 3; i++) {
 		int sum = 0;
 		for (int j = 0; j < 3; j++) {
@@ -104,6 +120,7 @@ bool winControl(char m[][SIZ_r]) {
 		}
 	}
 
+	//tries 2 diagonals
 	if (m[0][0] + m[1][1] + m[2][2] == 237 || m[0][2] + m[1][1] + m[2][0] == 237) {
 		cout << "O player won" << endl;
 		control = true;
@@ -116,3 +133,4 @@ bool winControl(char m[][SIZ_r]) {
 	}
 	return control;
 }
+
